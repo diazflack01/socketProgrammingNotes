@@ -42,6 +42,7 @@ int main(int argc, char** argv)
     // Max pending connection queue. When this is full, client may receive ECONNREFUSED
     constexpr int maxBackLogConnectionQueue = 3;
     // Listen to the create server socket that was binded to the given port
+    std::cout << "listening for connections...\n";
     listen(serverSocketFd, maxBackLogConnectionQueue);
 
     // Create client address variable which'll be used in storing client information
@@ -50,6 +51,7 @@ int main(int argc, char** argv)
     // Accept a connection from the server socket which'll return a new file descriptor solely used for communication between server
     // and a specific client
     const int communicationSocketFd = accept(serverSocketFd, reinterpret_cast<sockaddr*>(&clie_addr), &clie_len);
+    std::cout << "Connection request detected, will attempt to accept...\n";
     if(communicationSocketFd < 0)
         error("Error: Accepting connection of client port");
 
@@ -70,7 +72,7 @@ int main(int argc, char** argv)
     if(bytesRead < 0)
         error("Error on read");
     
-    std::cout << "Read from file descriptor: " << buffer;
+    std::cout << "Read from file descriptor: " << buffer << std::endl;;
 
     close(communicationSocketFd);
     close(serverSocketFd);
